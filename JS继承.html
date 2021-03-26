@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>js extend</title>
+</head>
+
+<body>
+  <script>
+    // 1.原型链继承
+    (_ => {
+      console.log("1. 原型式继承");
+      function Parent(name) {
+        this.name = name || "";
+        this.colors = ["red", "blue"];
+      }
+      Parent.prototype.getName = function () {
+        return this.name;
+      }
+
+      function Child() {
+
+      }
+      // 关键
+      Child.prototype = new Parent();
+
+      var child1 = new Child();
+
+      console.log(child1);
+      child1.__proto__.name = "Lin";
+
+      var child2 = new Child();
+      console.log(child2);
+      console.log(child2 instanceof Child); // true
+      console.log(child2 instanceof Parent); // true
+      /**
+       * 子类的原型对象为父类的一个实例
+       * 缺点：
+       * - 原型对象上的所有属性会被共享
+       * - 子类无法向父类传参
+       */
+    })();
+
+    // 2.借用构造函数继承
+    (_ => {
+      console.log("2. 借用构造函数继承");
+
+      function Parent(name) {
+        this.name = name;
+        this.colors = ["red", "blue"];
+      }
+      Parent.prototype.getName = function () {
+        return this.name;
+      }
+
+      function Child(name) {
+        // 关键
+        Parent.apply(this, [name]);
+      }
+      var child1 = new Child("Lin");
+      console.log(child1);
+      console.log(child1.getName);  // undefined
+      console.log(child1 instanceof Child);  // true
+      console.log(child1 instanceof Parent);  // false
+
+      /**
+       * 在子类调用父类的构造函数
+       * 优点：
+       * - 子类实例的属性独立
+       * - 子类可向父类传参
+       * 缺点：
+       * - 只继承了父类构造函数定义的属性
+       * - 只是子类的实例，不是父类的实例
+       */
+    })();
+
+    // 3.组合式继承
+    (_ => {
+      console.log("3. 组合式继承");
+      function Parent(name) {
+        this.name = name;
+        this.colors = ["red", "blue"];
+      }
+      Parent.prototype.getName = function () {
+        return this.name;
+      }
+
+      function Child(name) {
+        // 关键1
+        Parent.call(this, name);
+      }
+      // 关键2
+      Child.prototype = new Parent();
+
+      var child1 = new Child("Lin");
+
+      console.log(child1);
+      console.log(child1.getName());  // Lin
+      console.log(child1 instanceof Child); // true
+      console.log(child1 instanceof Parent); // true
+
+      /**
+       * 结合原型链继承和借用构造函数继承
+       * 常用的继承方式
+       * 缺点
+       * - 调用了两次父类构造函数
+       */
+    })();
+
+    // 4.原型式继承
+    (_ => {
+      console.log("4. 原型式继承");
+      // == Object.create();
+      function createObj(obj) {
+        function _() { };
+        _.prototype = obj;
+        return new _();
+      }
+
+      var person = {
+        name: "Lin",
+        colors: ["red", "blue"]
+      };
+
+      let child1 = createObj(person);
+
+      console.log(child1)
+
+      /**
+       * 基于已有对象创建新的对象
+       * 优点：
+       * - 不必额外定义构造函数
+       * 缺点：
+       * - 已有对象的属性会被共享
+       */
+    })();
+
+    // 5.寄生式继承
+    (_ => {
+      console.log("5. 寄生式继承");
+      function createObj(obj) {
+        function _() { }
+        _.prototype = obj;
+        return new _();
+      }
+      // proxy
+      function createObj2(obj) {
+        let newObj = createObj(obj);
+        // 关键
+        newObj.say = function () {
+          console.log("增强对象");
+        }
+
+        return newObj;
+      }
+
+      var person = {
+        name: "Lin",
+        colors: ["red", "blue"]
+      };
+
+      var child1 = createObj2(person);
+      console.log(child1);
+
+      /**
+       * 基于原型式继承，在其基础上扩展了对象的属性
+       */
+    })();
+
+    // 6.寄生组合式继承
+    (_ => {
+      console.log("6. 寄生组合式继承");
+      function Parent(name) {
+        this.name = name;
+        this.colors = ["red", "blue"];
+      }
+      Parent.prototype.getName = function () {
+        return this.name;
+      }
+
+      function Child(name) {
+        Parent.call(this, name);
+      }
+      // 关键1
+      function createObj(o) {
+        function _() {};
+        _.prototype = o;
+        return new _();
+      }
+
+      // 关键2
+      var prototype = createObj(Parent.prototype);
+      prototype.constructor = Child;  // 增强对象
+      Child.prototype = prototype;
+
+      var child1 = new Child("Lin");
+      console.log(child1);
+      console.log(child1 instanceof Child);
+      console.log(child1 instanceof Parent);
+
+      /**
+       * 子类构造函数复制父类的自身属性和方法，子类原型只接收父类的原型属性和方法
+       * 是最理想的继承
+       * 优点
+       * - 子类实例的原型对象上没有多余的属性
+       * - 父类构造函数只调用一次
+       * 
+       */
+    })(); 
+  </script>
+</body>
+
+</html>
