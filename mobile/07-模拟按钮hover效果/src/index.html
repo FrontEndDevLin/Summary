@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>模拟按钮hover效果</title>
+</head>
+<body>
+  <h2>模拟按钮hover效果</h2>
+<pre>
+<code>
+document.body.addEventListener("touchstart", (e) => {
+  let { target } = e;
+  if (target.className.indexOf("btn") != -1) {
+    target.className = target.className + " active";
+  }
+});
+document.body.addEventListener("touchend", (e) => {
+  let { target } = e;
+  if (target.className.indexOf("btn") != -1) {
+    target.className = target.className.replace(/\s?active/, "");
+  }
+});
+</code>
+</pre>
+  <button class="btn">btn</button>
+
+  <script>
+    document.body.addEventListener("touchstart", (e) => {
+      let { target } = e;
+      if (target.className.indexOf("btn") != -1) {
+        target.className = target.className + " active";
+      }
+    });
+    document.body.addEventListener("touchend", (e) => {
+      let { target } = e;
+      if (target.className.indexOf("btn") != -1) {
+        target.className = target.className.replace(/\s?active/, "");
+      }
+    });
+  </script>
+</body>
+</html>

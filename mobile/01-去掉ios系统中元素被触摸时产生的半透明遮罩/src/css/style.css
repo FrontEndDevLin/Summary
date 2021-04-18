@@ -1,0 +1,8 @@
+html {
+  font-size: 14px;
+  background: #eee;
+}
+
+a, button, input, textarea {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0)
+}

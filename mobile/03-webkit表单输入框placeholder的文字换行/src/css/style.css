@@ -1,0 +1,5 @@
+textarea::-webkit-input-placeholder:after {
+  display: block;
+  content: "hello@ \A world#";
+
+}
