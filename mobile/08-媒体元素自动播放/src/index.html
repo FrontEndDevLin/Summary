@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>08-媒体元素自动播放</title>
+</head>
+<body>
+  <h2>08-媒体元素自动播放</h2>
+
+<pre>
+<code>
+  触屏即播
+  
+  let videoObject = {
+    el: document.getElementById("video"),
+    onload: false,
+    play: false
+  }
+  
+  videoObject.el.oncanplay = () => {
+    videoObject.onload = true;
+  }
+  
+  document.addEventListener("touchend", () => {
+    if (!videoObject.play) {
+      videoObject.el.play().then(() => {
+        alert("自动播放")
+      }).catch((err) => {
+        alert(err);
+      });
+      videoObject.play = true;
+    }
+  })
+</code>
+</pre>
+  <hr>
+
+  <video id="video" src="./media/dark souls.mp4" autoplay="autoplay" controls loop></video>
+</body>
+</html>
