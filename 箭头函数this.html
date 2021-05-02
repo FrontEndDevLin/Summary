@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    let Father = () => {
+      this.name = "Lin";
+    }
+
+    let f = new Father();
+    /**
+     * 报错，Father is not a constructor
+     * 箭头函数不能做构造函数使用
+     */
+    console.log(f)
+  </script>
+</body>
+</html>
